@@ -42,14 +42,14 @@ def __repr__(self):
 # Create a route that return the dashboard homepage
 
 
-@app.route("/")
+@app.route('/')
 def home():
     return render_template("index.html")
 
 # Create a route that renders a list of the sample names
 
 
-@app.route("/names")
+@app.route('/names')
 def names_list():
     # Create inspecor and connect it to the engine
     inspector = inspect(engine)
@@ -70,7 +70,7 @@ def names_list():
 # List of OTU descriptions
 
 
-@app.route("/otu")
+@app.route('/otu')
 def description():
     results = session.query(Otu.lowest_taxonomic_unit_found).all()
 
@@ -84,7 +84,7 @@ def description():
 # MetaData for a given sample
 
 
-@app.route("/metadata/<sample>")
+@app.route('/metadata/<sample>')
 def sample_meta(sample):
     sample_id = sample[3:]
 
@@ -100,3 +100,26 @@ def sample_meta(sample):
     }
 
     return jsonify(metadict)
+
+# Weekly washing frequency as a number
+
+
+@app.route('/wfreq/<sample>')
+def wfreq(sample):
+    sample_id = sample[3:]
+    result = session.query(Metadata.WFREQ, Metadata.SAMPLEID).filter(Metadata.SAMPLEID == sample_id).first()
+    return jsonify(result[0])
+
+
+# OTU IDs and Smaple Values for a given sample
+@app.route('/samples/<sample>')
+def samp(sample):
+    sample_id_query = f"Samples.{sample}"
+    results = session.query(Sample.otu_id, sample_id_query).order_by(desc(sample_id_query)).all()
+    sampdict = {"otu_ids": [result[0] for result in results], "sample_values": [result[1] for result in results]}
+    return jsonify(sampdict)
+
+
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0,0,0,0', port=port, debug=True)
