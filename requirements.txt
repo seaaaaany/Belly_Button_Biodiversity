@@ -9,7 +9,6 @@ cffi==1.11.4
 chardet==3.0.4
 citipy==0.0.5
 click==6.7
-conda==4.5.1
 cryptography==2.1.4
 cycler==0.10.0
 decorator==4.3.0
