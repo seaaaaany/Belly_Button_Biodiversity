@@ -15,7 +15,7 @@ The belly button is one of the habitats closest to us, and yet it remains relati
 You can click [here](http://robdunnlab.com/projects/belly-button-biodiversity/) for more updates and information.
 
 ---
-### Technology Stack Used:
+### Technology Stack Used
 + Pandas
 + Flask MicroFrameWork
 + SQLAlchemy
